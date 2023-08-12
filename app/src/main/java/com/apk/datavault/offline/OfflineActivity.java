@@ -95,7 +95,7 @@ public class OfflineActivity extends AppCompatActivity {
             File[] files = directory.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    if (file.isFile() && file.getName().toLowerCase().endsWith(".apk")) {
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(".apk") && file.getName().toLowerCase().endsWith(".apk")) {
                         apkFiles.add(file);
                     }
                 }
@@ -138,11 +138,16 @@ public class OfflineActivity extends AppCompatActivity {
                     String fileSizeFormatted = formatFileSize(fileSize);
                     filesize.setText(fileSizeFormatted);
                 }
+                if (!String.valueOf(apkFile).contains(".apk")) {
+                    install.setVisibility(View.GONE);
+                }
                 textview1.setText(String.valueOf((long) (position + 1)));
                 install.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        install(String.valueOf(apkFile));
+                        if (String.valueOf(apkFile).contains(".apk")) {
+                            install(String.valueOf(apkFile));
+                        }
                     }
                 });
                 delete.setOnClickListener(new View.OnClickListener() {
