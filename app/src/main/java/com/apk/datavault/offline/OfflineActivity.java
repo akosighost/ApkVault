@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.apk.datavault.R;
@@ -37,17 +38,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class OfflineActivity extends AppCompatActivity {
 
     private ListView listView;
     private ImageView back;
-    private SwipeRefreshLayout swipe;
-    private List<ApkFileData> apkFiles = new ArrayList<>();
+    private List<ApkFileData> fileData = new ArrayList<>();
 
     @Override
     public void onBackPressed() {
@@ -70,7 +66,6 @@ public class OfflineActivity extends AppCompatActivity {
         }
         listView = findViewById(R.id.listview);
         back = findViewById(R.id.back);
-        swipe = findViewById(R.id.swipe);
 
         back.setOnClickListener(view -> {
             if (DataExtension.isConnected(getApplicationContext())) {
@@ -95,7 +90,7 @@ public class OfflineActivity extends AppCompatActivity {
             File[] files = directory.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    if (file.isFile() && file.getName().toLowerCase().endsWith(".apk") && file.getName().toLowerCase().endsWith(".apk")) {
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(".apk") || file.getName().toLowerCase().endsWith(".txt")) {
                         apkFiles.add(file);
                     }
                 }
@@ -150,6 +145,14 @@ public class OfflineActivity extends AppCompatActivity {
                         }
                     }
                 });
+                linear1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (String.valueOf(apkFile).contains(".txt")) {
+                            openTxtFile(apkFile);
+                        }
+                    }
+                });
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -172,8 +175,22 @@ public class OfflineActivity extends AppCompatActivity {
         ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
         listView.onRestoreInstanceState(listState);
     }
+    private void openTxtFile(File txtFile) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", txtFile);
+        intent.setDataAndType(uri, "text/plain");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // Handle if there's no suitable app to open the file
+            Toast.makeText(this, "No app found to open the file.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void sortApkFilesByTime() {
-        Collections.sort(apkFiles, new Comparator<ApkFileData>() {
+        Collections.sort(fileData, new Comparator<ApkFileData>() {
             @Override
             public int compare(ApkFileData apk1, ApkFileData apk2) {
                 return Long.compare(apk1.getTimestamp(), apk2.getTimestamp());
