@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="please_wait">Please Wait</string>
+    <string name="todo">TODO</string>
+    <string name="cancel_download_dialog">C A N C E L</string>
+    <string name="downloading">Downloading</string>
+    <string name="available_offline">Available Offline</string>
+</resources>

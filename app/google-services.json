@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "454697977266",
+    "firebase_url": "https://apk-hub-data-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "apk-hub-data",
+    "storage_bucket": "apk-hub-data.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454697977266:android:23ada629e7f1dc3ed490ab",
+        "android_client_info": {
+          "package_name": "com.apk.datavault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454697977266-k51r2d6bf2ndi7hg524rgnn7aim44m6n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apk.datavault",
+            "certificate_hash": "46f2aa25b807af2a1c1c62f367848dc9d1acad34"
+          }
+        },
+        {
+          "client_id": "454697977266-97nevhbp2nghu2vdjboak20rk0gamvre.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRljPOcPoBiOmCGhwb0hzksCGkK1os0Vs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454697977266-97nevhbp2nghu2vdjboak20rk0gamvre.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454697977266:android:c6071ab4f642efd7d490ab",
+        "android_client_info": {
+          "package_name": "com.apk.hub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454697977266-97nevhbp2nghu2vdjboak20rk0gamvre.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRljPOcPoBiOmCGhwb0hzksCGkK1os0Vs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454697977266-97nevhbp2nghu2vdjboak20rk0gamvre.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

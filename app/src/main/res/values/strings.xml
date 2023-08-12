@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">ApkVault</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="todo">TODO</string>
+    <string name="data1">https://akosighost.github.io/Apk/</string>
+    <string name="data2">https://akosighost.github.io/Apk-Games/</string>
+    <string name="update_data">https://akosighost.github.io/ApkHub-Update/</string>
+    <string name="cancel_download_dialog">C A N C E L</string>
+    <string name="pause_download_dialog">P A U S E</string>
+    <string name="resume_download_dialog">R E S U M E</string>
+    <string name="install_dialog">I N S T A L L</string>
+    <string name="update_dialog">U P D A T E</string>
+    <string name="downloading">Downloading</string>
+    <string name="cancel">Cancel</string>
+    <string name="download_success">Downloading Success</string>
+    <string name="checkbox">Auto Install</string>
+    <string name="no_api">Can\'t resolve api host</string>
+    <string name="unable_to_download">Unable to download</string>
+    <string name="version">Version</string>
+    <string name="search">Search…</string>
+    <string name="applications">Applications</string>
+    <string name="games">Games</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="file_size">0 kB</string>
+    <string name="download_percent">0%</string>
+    <string name="available_offline">Available Offline</string>
+</resources>
