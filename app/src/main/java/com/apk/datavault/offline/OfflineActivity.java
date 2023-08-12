@@ -3,7 +3,11 @@ package com.apk.datavault.offline;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,7 +47,9 @@ public class OfflineActivity extends AppCompatActivity {
 
     private ListView listView;
     private ImageView back;
+    private SwipeRefreshLayout swipe;
     private List<ApkFileData> fileData = new ArrayList<>();
+    private AnimationUtils animationUtils;
 
     @Override
     public void onBackPressed() {
@@ -66,7 +72,19 @@ public class OfflineActivity extends AppCompatActivity {
         }
         listView = findViewById(R.id.listview);
         back = findViewById(R.id.back);
-
+        swipe = findViewById(R.id.swipe);
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                try {
+                    Parcelable listState = listView.onSaveInstanceState();
+                    sortApkFilesByTime();
+                    ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
+                    listView.onRestoreInstanceState(listState);
+                } catch (Exception ignored) {
+                }
+            }
+        });
         back.setOnClickListener(view -> {
             if (DataExtension.isConnected(getApplicationContext())) {
                 finish();
@@ -90,7 +108,7 @@ public class OfflineActivity extends AppCompatActivity {
             File[] files = directory.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    if (file.isFile() && file.getName().toLowerCase().endsWith(".apk") || file.getName().toLowerCase().endsWith(".txt")) {
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(".apk") || file.isFile() && file.getName().toLowerCase().endsWith(".txt")) {
                         apkFiles.add(file);
                     }
                 }
@@ -108,13 +126,15 @@ public class OfflineActivity extends AppCompatActivity {
                 final TextView textview4 = view.findViewById(R.id.textview4);
                 final LinearLayout linear1 = view.findViewById(R.id.linear1);
                 final LinearLayout linear2 = view.findViewById(R.id.linear2);
-                textview4.setVisibility(View.GONE);
-                final ImageView install = view.findViewById(R.id.install);
+                final ImageView image = view.findViewById(R.id.install);
                 final ImageView delete = view.findViewById(R.id.delete);
+                final ImageView apkicon = view.findViewById(R.id.apkicon);
+                textview4.setVisibility(View.GONE);
+                apkicon.setVisibility(View.GONE);
                 {
                     {
                         Animation animation;
-                        animation = new AnimationUtils().loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+                        animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
                         animation.setDuration(700);
                         linear1.startAnimation(animation);
                         animation = null;
@@ -133,22 +153,25 @@ public class OfflineActivity extends AppCompatActivity {
                     String fileSizeFormatted = formatFileSize(fileSize);
                     filesize.setText(fileSizeFormatted);
                 }
-                if (!String.valueOf(apkFile).contains(".apk")) {
-                    install.setVisibility(View.GONE);
+                if (String.valueOf(apkFile).contains(".apk")) {
+                    image.setImageResource(R.drawable.install_mobile);
+                } else if (String.valueOf(apkFile).contains(".txt")) {
+                    image.setImageResource(R.drawable.file_open);
                 }
+//                assert apkFile != null;
+//                Drawable apkIcon = getApkIcon(apkFile);
+//                if (apkIcon != null) {
+//                    apkicon.setImageDrawable(apkIcon);
+//                } else {
+//                    apkicon.setImageResource(R.drawable.update); // Set a default image if no icon found
+//                }
                 textview1.setText(String.valueOf((long) (position + 1)));
-                install.setOnClickListener(new View.OnClickListener() {
+                image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (String.valueOf(apkFile).contains(".apk")) {
                             install(String.valueOf(apkFile));
-                        }
-                    }
-                });
-                linear1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (String.valueOf(apkFile).contains(".txt")) {
+                        } else if (String.valueOf(apkFile).contains(".txt")) {
                             openTxtFile(apkFile);
                         }
                     }
@@ -174,6 +197,17 @@ public class OfflineActivity extends AppCompatActivity {
         sortApkFilesByTime();
         ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
         listView.onRestoreInstanceState(listState);
+    }
+    private Drawable getApkIcon(File apkFile) {
+        PackageManager pm = getPackageManager();
+        PackageInfo packageInfo = pm.getPackageArchiveInfo(apkFile.getAbsolutePath(), 0);
+        if (packageInfo != null) {
+            ApplicationInfo appInfo = packageInfo.applicationInfo;
+            appInfo.sourceDir = apkFile.getAbsolutePath();
+            appInfo.publicSourceDir = apkFile.getAbsolutePath();
+            return appInfo.loadIcon(pm);
+        }
+        return null;
     }
     private void openTxtFile(File txtFile) {
         Intent intent = new Intent(Intent.ACTION_VIEW);

@@ -462,8 +462,10 @@ public class HomeActivity extends AppCompatActivity {
             final ImageView img4 = view.findViewById(R.id.img4);
             final ImageView install = view.findViewById(R.id.install);
             final ImageView delete = view.findViewById(R.id.delete);
+            final ImageView apkicon = view.findViewById(R.id.apkicon);
             install.setVisibility(View.GONE);
             delete.setVisibility(View.GONE);
+            apkicon.setVisibility(View.GONE);
             {
                 textview3.setVisibility(View.GONE);
                 textview4.setVisibility(View.GONE);

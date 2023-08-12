@@ -24,6 +24,14 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:layout_marginBottom="5dp">
+            <ImageView
+                android:id="@+id/apkicon"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/install_mobile"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"/>
             <TextView
                 android:id="@+id/textview1"
                 android:layout_width="30dp"
