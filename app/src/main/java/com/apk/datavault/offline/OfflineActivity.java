@@ -170,21 +170,21 @@ public class OfflineActivity extends AppCompatActivity {
                     android.graphics.drawable.GradientDrawable SketchUi = new android.graphics.drawable.GradientDrawable();
                     int d = (int) getApplicationContext().getResources().getDisplayMetrics().density;
                     SketchUi.setCornerRadius(d * 300);
-                    SketchUi.setStroke(d, 0xFF2196F3);
+                    SketchUi.setStroke(d, 0xFF228B22);
                     type_holder2.setBackground(SketchUi);
                 }
                 {
                     android.graphics.drawable.GradientDrawable SketchUi = new android.graphics.drawable.GradientDrawable();
                     int d = (int) getApplicationContext().getResources().getDisplayMetrics().density;
                     SketchUi.setCornerRadius(d * 300);
-                    SketchUi.setStroke(d, 0xFFF44336);
+                    SketchUi.setStroke(d, 0xFF2196F3);
                     type_holder3.setBackground(SketchUi);
                 }
                 {
                     android.graphics.drawable.GradientDrawable SketchUi = new android.graphics.drawable.GradientDrawable();
                     int d = (int) getApplicationContext().getResources().getDisplayMetrics().density;
                     SketchUi.setCornerRadius(d * 300);
-                    SketchUi.setStroke(d, 0xFF228B22);
+                    SketchUi.setStroke(d, 0xFFF44336);
                     type_holder4.setBackground(SketchUi);
                 }
                 if (position == getCount() - 1) {
