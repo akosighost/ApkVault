@@ -182,7 +182,7 @@ public class OfflineActivity extends AppCompatActivity {
                         if (apkFile != null) {
                             apkFiles.remove(apkFile);
                             apkFile.delete();
-                            sortApkFilesByTime();
+                            refreshListView();
                         }
                     }
                 });
@@ -220,7 +220,10 @@ public class OfflineActivity extends AppCompatActivity {
     }
     private void refreshListView() {
         sortApkFilesByTime();
-        adapter.notifyDataSetChanged();
+        Parcelable listState = listView.onSaveInstanceState();
+        listView.setAdapter(adapter);
+        ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
+        listView.onRestoreInstanceState(listState);
     }
 
     private void sortApkFilesByTime() {
