@@ -81,6 +81,7 @@ public class OfflineActivity extends AppCompatActivity {
                     sortApkFilesByTime();
                     ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
                     listView.onRestoreInstanceState(listState);
+                    swipe.setRefreshing(false);
                 } catch (Exception ignored) {
                 }
             }
