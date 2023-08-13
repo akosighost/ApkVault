@@ -48,6 +48,7 @@ public class OfflineActivity extends AppCompatActivity {
     private ListView listView;
     private ImageView back;
     private SwipeRefreshLayout swipe;
+    private ArrayAdapter<ApkFileData> adapter;
     private List<ApkFileData> fileData = new ArrayList<>();
     private AnimationUtils animationUtils;
 
@@ -78,11 +79,11 @@ public class OfflineActivity extends AppCompatActivity {
             public void onRefresh() {
                 try {
                     Parcelable listState = listView.onSaveInstanceState();
-                    sortApkFilesByTime();
                     ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
                     listView.onRestoreInstanceState(listState);
                     swipe.setRefreshing(false);
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    swipe.setRefreshing(false);
                 }
             }
         });
@@ -124,28 +125,26 @@ public class OfflineActivity extends AppCompatActivity {
                 final TextView textview1 = view.findViewById(R.id.textview1);
                 final TextView fileName = view.findViewById(R.id.textview2);
                 final TextView filesize = view.findViewById(R.id.textview3);
+                final TextView end_of_list = view.findViewById(R.id.end_of_list);
                 final TextView textview4 = view.findViewById(R.id.textview4);
                 final LinearLayout linear1 = view.findViewById(R.id.linear1);
                 final LinearLayout linear2 = view.findViewById(R.id.linear2);
                 final ImageView image = view.findViewById(R.id.install);
                 final ImageView delete = view.findViewById(R.id.delete);
-                final ImageView apkicon = view.findViewById(R.id.apkicon);
+                final ImageView apkicon = view.findViewById(R.id.image);
                 textview4.setVisibility(View.GONE);
                 apkicon.setVisibility(View.GONE);
+                if (position == getCount() - 1) {
+                    end_of_list.setVisibility(View.VISIBLE);
+                } else {
+                    end_of_list.setVisibility(View.GONE);
+                }
                 {
-                    {
-                        Animation animation;
-                        animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
-                        animation.setDuration(700);
-                        linear1.startAnimation(animation);
-                        animation = null;
-                    }
                     {
                         gradientDrawable(linear1, 0, 0, 0, "#FF202226", "#000000", false);
                         gradientDrawable(linear2, 0, 2, 20, "#FF202226", "#FF2A2B2F", false);
                     }
                 }
-
                 File apkFile = getItem(position);
                 if (apkFile != null) {
                     fileName.setText(apkFile.getName());
@@ -183,10 +182,7 @@ public class OfflineActivity extends AppCompatActivity {
                         if (apkFile != null) {
                             apkFiles.remove(apkFile);
                             apkFile.delete();
-                            Parcelable listState = listView.onSaveInstanceState();
                             sortApkFilesByTime();
-                            ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
-                            listView.onRestoreInstanceState(listState);
                         }
                     }
                 });
@@ -195,7 +191,6 @@ public class OfflineActivity extends AppCompatActivity {
         };
         Parcelable listState = listView.onSaveInstanceState();
         listView.setAdapter(adapter);
-        sortApkFilesByTime();
         ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
         listView.onRestoreInstanceState(listState);
     }
@@ -223,6 +218,10 @@ public class OfflineActivity extends AppCompatActivity {
             Toast.makeText(this, "No app found to open the file.", Toast.LENGTH_SHORT).show();
         }
     }
+    private void refreshListView() {
+        sortApkFilesByTime();
+        adapter.notifyDataSetChanged();
+    }
 
     private void sortApkFilesByTime() {
         Collections.sort(fileData, new Comparator<ApkFileData>() {
@@ -232,6 +231,7 @@ public class OfflineActivity extends AppCompatActivity {
             }
         });
     }
+
     private static class ApkFileData {
         private File file;
         private long timestamp;

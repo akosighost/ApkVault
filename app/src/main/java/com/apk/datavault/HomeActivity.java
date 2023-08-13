@@ -452,6 +452,7 @@ public class HomeActivity extends AppCompatActivity {
             final TextView type2 = view.findViewById(R.id.type2);
             final TextView type3 = view.findViewById(R.id.type3);
             final TextView type4 = view.findViewById(R.id.type4);
+            final TextView end_of_list = view.findViewById(R.id.end_of_list);
             final LinearLayout type_holder1 = view.findViewById(R.id.type_holder1);
             final LinearLayout type_holder2 = view.findViewById(R.id.type_holder2);
             final LinearLayout type_holder3 = view.findViewById(R.id.type_holder3);
@@ -462,10 +463,15 @@ public class HomeActivity extends AppCompatActivity {
             final ImageView img4 = view.findViewById(R.id.img4);
             final ImageView install = view.findViewById(R.id.install);
             final ImageView delete = view.findViewById(R.id.delete);
-            final ImageView apkicon = view.findViewById(R.id.apkicon);
+            final ImageView apkicon = view.findViewById(R.id.image);
             install.setVisibility(View.GONE);
             delete.setVisibility(View.GONE);
             apkicon.setVisibility(View.GONE);
+            if (position == getCount() - 1) {
+                end_of_list.setVisibility(View.VISIBLE);
+            } else {
+                end_of_list.setVisibility(View.GONE);
+            }
             {
                 textview3.setVisibility(View.GONE);
                 textview4.setVisibility(View.GONE);

@@ -181,5 +181,4 @@
             </com.bosphere.fadingedgelayout.FadingEdgeLayout>
         </LinearLayout>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
