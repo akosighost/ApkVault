@@ -734,20 +734,16 @@ public class HomeActivity extends AppCompatActivity {
                                             @Override
                                             public void onError(Error error) {
                                                 downloadDialog.dismiss();
-                                                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "Unable to download!", Toast.LENGTH_SHORT).show();
                                             }
                                         });
-                                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                    @Override
-                                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                        final boolean isChecked = b;
-                                        if (isChecked) {
-                                            check = 0;
-                                            save.edit().putString("save_switch", String.valueOf((long)(check))).apply();
-                                        } else {
-                                            check = 1;
-                                            save.edit().putString("save_switch", String.valueOf((long)(check))).apply();
-                                        }
+                                checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+                                    if (b) {
+                                        check = 0;
+                                        save.edit().putString("save_switch", String.valueOf((long)(check))).apply();
+                                    } else {
+                                        check = 1;
+                                        save.edit().putString("save_switch", String.valueOf((long)(check))).apply();
                                     }
                                 });
                                 button1.setOnClickListener(view1 -> {

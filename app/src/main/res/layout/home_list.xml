@@ -85,9 +85,10 @@
                             android:id="@+id/type1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/sample"
                             android:padding="4dp"
                             android:alpha="0.8"
-                            android:textSize="8sp"
+                            android:textSize="10sp"
                             android:textColor="@color/gray"/>
                         <ImageView
                             android:id="@+id/img1"
@@ -111,9 +112,10 @@
                             android:id="@+id/type2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/sample"
                             android:padding="4dp"
                             android:alpha="0.8"
-                            android:textSize="8sp"
+                            android:textSize="10sp"
                             android:textColor="@color/blue"/>
                         <ImageView
                             android:id="@+id/img2"
@@ -137,9 +139,10 @@
                             android:id="@+id/type3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/sample"
                             android:padding="4dp"
                             android:alpha="0.8"
-                            android:textSize="8sp"
+                            android:textSize="10sp"
                             android:textColor="@color/red"/>
                         <ImageView
                             android:id="@+id/img3"
@@ -163,9 +166,10 @@
                             android:id="@+id/type4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/sample"
                             android:padding="4dp"
                             android:alpha="0.8"
-                            android:textSize="8sp"
+                            android:textSize="10sp"
                             android:textColor="@color/green"/>
                         <ImageView
                             android:id="@+id/img4"

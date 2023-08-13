@@ -1,4 +1,7 @@
 <resources>
+    // Sample text
+    <string name="sample">Sample Text</string>
+
     <string name="app_name">ApkVault</string>
     <string name="please_wait">Please Wait</string>
     <string name="todo">TODO</string>
@@ -25,4 +28,7 @@
     <string name="download_percent">0%</string>
     <string name="available_offline">Available Offline</string>
     <string name="end_of_list">(⁠づ⁠￣⁠ ⁠³⁠￣⁠)⁠づ End of list!</string>
+    <string name="install">Install</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
 </resources>

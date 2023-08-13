@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,16 +49,22 @@ public class OfflineActivity extends AppCompatActivity {
     private ListView listView;
     private ImageView back;
     private SwipeRefreshLayout swipe;
-    private ArrayAdapter<ApkFileData> adapter;
     private List<ApkFileData> fileData = new ArrayList<>();
     private AnimationUtils animationUtils;
+    private static final int BACK_PRESS_DELAY = 2000; // 2 seconds
+    private long backPressTime;
 
     @Override
     public void onBackPressed() {
         if (DataExtension.isConnected(getApplicationContext())) {
             finish();
-        } else if (DataExtension.isConnected(getApplicationContext())) {
-            finishAffinity();
+        } else if (!DataExtension.isConnected(getApplicationContext())) {
+            if (System.currentTimeMillis() - backPressTime < BACK_PRESS_DELAY) {
+                finishAffinity(); // Exit the app or perform your desired action here
+            } else {
+                Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+                backPressTime = System.currentTimeMillis();
+            }
         }
     }
 
@@ -122,18 +129,64 @@ public class OfflineActivity extends AppCompatActivity {
                 if (view == null) {
                     view = getLayoutInflater().inflate(R.layout.home_list, parent, false);
                 }
+                final LinearLayout linear1 = view.findViewById(R.id.linear1);
+                final LinearLayout linear2 = view.findViewById(R.id.linear2);
                 final TextView textview1 = view.findViewById(R.id.textview1);
                 final TextView fileName = view.findViewById(R.id.textview2);
                 final TextView filesize = view.findViewById(R.id.textview3);
-                final TextView end_of_list = view.findViewById(R.id.end_of_list);
                 final TextView textview4 = view.findViewById(R.id.textview4);
-                final LinearLayout linear1 = view.findViewById(R.id.linear1);
-                final LinearLayout linear2 = view.findViewById(R.id.linear2);
-                final ImageView image = view.findViewById(R.id.install);
+                final TextView type1 = view.findViewById(R.id.type1);
+                final TextView type2 = view.findViewById(R.id.type2);
+                final TextView type3 = view.findViewById(R.id.type3);
+                final TextView type4 = view.findViewById(R.id.type4);
+                final TextView end_of_list = view.findViewById(R.id.end_of_list);
+                final LinearLayout type_holder1 = view.findViewById(R.id.type_holder1);
+                final LinearLayout type_holder2 = view.findViewById(R.id.type_holder2);
+                final LinearLayout type_holder3 = view.findViewById(R.id.type_holder3);
+                final LinearLayout type_holder4 = view.findViewById(R.id.type_holder4);
+                final ImageView img1 = view.findViewById(R.id.img1);
+                final ImageView img2 = view.findViewById(R.id.img2);
+                final ImageView img3 = view.findViewById(R.id.img3);
+                final ImageView img4 = view.findViewById(R.id.img4);
+                final ImageView install = view.findViewById(R.id.install);
                 final ImageView delete = view.findViewById(R.id.delete);
-                final ImageView apkicon = view.findViewById(R.id.image);
+                final ImageView image = view.findViewById(R.id.image);
                 textview4.setVisibility(View.GONE);
-                apkicon.setVisibility(View.GONE);
+                type_holder1.setVisibility(View.GONE);
+                install.setVisibility(View.GONE);
+                delete.setVisibility(View.GONE);
+                image.setVisibility(View.GONE);
+                type2.setText(R.string.install);
+                type3.setText(R.string.share);
+                type4.setText(R.string.delete);
+                {
+                    android.graphics.drawable.GradientDrawable SketchUi = new android.graphics.drawable.GradientDrawable();
+                    int d = (int) getApplicationContext().getResources().getDisplayMetrics().density;
+                    SketchUi.setCornerRadius(d * 300);
+                    SketchUi.setStroke(d, 0xFF9E9E9E);
+                    type_holder1.setBackground(SketchUi);
+                }
+                {
+                    android.graphics.drawable.GradientDrawable SketchUi = new android.graphics.drawable.GradientDrawable();
+                    int d = (int) getApplicationContext().getResources().getDisplayMetrics().density;
+                    SketchUi.setCornerRadius(d * 300);
+                    SketchUi.setStroke(d, 0xFF2196F3);
+                    type_holder2.setBackground(SketchUi);
+                }
+                {
+                    android.graphics.drawable.GradientDrawable SketchUi = new android.graphics.drawable.GradientDrawable();
+                    int d = (int) getApplicationContext().getResources().getDisplayMetrics().density;
+                    SketchUi.setCornerRadius(d * 300);
+                    SketchUi.setStroke(d, 0xFFF44336);
+                    type_holder3.setBackground(SketchUi);
+                }
+                {
+                    android.graphics.drawable.GradientDrawable SketchUi = new android.graphics.drawable.GradientDrawable();
+                    int d = (int) getApplicationContext().getResources().getDisplayMetrics().density;
+                    SketchUi.setCornerRadius(d * 300);
+                    SketchUi.setStroke(d, 0xFF228B22);
+                    type_holder4.setBackground(SketchUi);
+                }
                 if (position == getCount() - 1) {
                     end_of_list.setVisibility(View.VISIBLE);
                 } else {
@@ -147,8 +200,10 @@ public class OfflineActivity extends AppCompatActivity {
                 }
                 File apkFile = getItem(position);
                 if (apkFile != null) {
+                    fileName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
                     fileName.setText(apkFile.getName());
-
+                    fileName.setSelected(true);
+                    fileName.setSingleLine(true);
                     long fileSize = apkFile.length();
                     String fileSizeFormatted = formatFileSize(fileSize);
                     filesize.setText(fileSizeFormatted);
@@ -166,24 +221,29 @@ public class OfflineActivity extends AppCompatActivity {
 //                    apkicon.setImageResource(R.drawable.update); // Set a default image if no icon found
 //                }
                 textview1.setText(String.valueOf((long) (position + 1)));
-                image.setOnClickListener(new View.OnClickListener() {
+                type2.setOnClickListener(view1 -> {
+                    if (String.valueOf(apkFile).contains(".apk")) {
+                        install(String.valueOf(apkFile));
+                    } else if (String.valueOf(apkFile).contains(".txt")) {
+                        openTxtFile(apkFile);
+                    }
+                });
+                type3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (String.valueOf(apkFile).contains(".apk")) {
-                            install(String.valueOf(apkFile));
-                        } else if (String.valueOf(apkFile).contains(".txt")) {
-                            openTxtFile(apkFile);
+                        if (apkFile != null) {
+                            shareApkFile(apkFile);
                         }
                     }
                 });
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (apkFile != null) {
-                            apkFiles.remove(apkFile);
-                            apkFile.delete();
-                            refreshListView();
-                        }
+                type4.setOnClickListener(v -> {
+                    if (apkFile != null) {
+                        apkFiles.remove(apkFile);
+                        apkFile.delete();
+                        Parcelable listState = listView.onSaveInstanceState();
+                        sortApkFilesByTime();
+                        ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
+                        listView.onRestoreInstanceState(listState);
                     }
                 });
                 return view;
@@ -191,9 +251,24 @@ public class OfflineActivity extends AppCompatActivity {
         };
         Parcelable listState = listView.onSaveInstanceState();
         listView.setAdapter(adapter);
+        sortApkFilesByTime();
         ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
         listView.onRestoreInstanceState(listState);
     }
+    private void shareApkFile(File apkFile) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/vnd.android.package-archive");
+        Uri apkUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", apkFile);
+        intent.putExtra(Intent.EXTRA_STREAM, apkUri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            startActivity(Intent.createChooser(intent, "Share APK using"));
+        } catch (ActivityNotFoundException e) {
+            // Handle if no suitable app to handle sharing
+            Toast.makeText(this, "No app found to share the APK.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private Drawable getApkIcon(File apkFile) {
         PackageManager pm = getPackageManager();
         PackageInfo packageInfo = pm.getPackageArchiveInfo(apkFile.getAbsolutePath(), 0);
@@ -218,13 +293,6 @@ public class OfflineActivity extends AppCompatActivity {
             Toast.makeText(this, "No app found to open the file.", Toast.LENGTH_SHORT).show();
         }
     }
-    private void refreshListView() {
-        sortApkFilesByTime();
-        Parcelable listState = listView.onSaveInstanceState();
-        listView.setAdapter(adapter);
-        ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
-        listView.onRestoreInstanceState(listState);
-    }
 
     private void sortApkFilesByTime() {
         Collections.sort(fileData, new Comparator<ApkFileData>() {
@@ -234,7 +302,6 @@ public class OfflineActivity extends AppCompatActivity {
             }
         });
     }
-
     private static class ApkFileData {
         private File file;
         private long timestamp;

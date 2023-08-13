@@ -93,6 +93,7 @@ public class IntroActivity extends AppCompatActivity {
         for (int i = 0; i < dotCount; i++) {
             dotsBuilder.append(".");
         }
-        loading.setText(getString(R.string.please_wait).concat(String.valueOf(dotsBuilder)));
+//        loading.setText(getString(R.string.please_wait).concat(String.valueOf(dotsBuilder)));
+        loading.setText(String.valueOf(dotsBuilder));
     }
 }
